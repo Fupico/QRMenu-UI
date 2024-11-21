@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/EmptyLayout.vue"),
     children: [
       // Varsayılan userId olmadan ana sayfa yönlendirmesi
-      { path: "", component: () => import("pages/Menu.vue") },
+      { path: "", component: () => import("pages/ContactPage.vue") },
     ],
   },
   {

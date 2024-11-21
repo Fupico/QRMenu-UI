@@ -34,6 +34,8 @@
           <button type="submit" class="btn-register">Kayıt Ol</button>
         </form>
         <button @click="goBack" class="btn-back">Geri</button>
+        <br />
+        <br />
         <FooterComponent />
       </div>
     </div>
@@ -46,6 +48,8 @@ import { useLoginApi } from "../composables/login";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar"; // Quasar kullanımı için import
 const $q = useQuasar(); // $q değişkenini tanımlama
+import FooterComponent from "../components/FooterComponent.vue";
+
 const router = useRouter();
 const { register } = useLoginApi();
 
@@ -106,7 +110,7 @@ const goBack = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('src/img/FuPiC.png') no-repeat center center; /* Görseli arka plan olarak ekledik */
+  background: url("src/img/FuPiC.png") no-repeat center center; /* Görseli arka plan olarak ekledik */
   background-size: cover; /* Görselin sayfanın tamamını kaplamasını sağlarız */
   background-attachment: fixed; /* Görselin kaymasını engeller */
   padding: 60px 20px;

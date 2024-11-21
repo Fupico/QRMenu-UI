@@ -30,9 +30,10 @@
             Şifremi Unuttum
           </button>
         </div>
+        <br />
+        <FooterComponent />
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 
@@ -134,7 +135,7 @@ const goToRegister = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('src/img/FuPiC.png') no-repeat center center; /* Görseli arka plan olarak ekledik */
+  background: url("src/img/FuPiC.png") no-repeat center center; /* Görseli arka plan olarak ekledik */
   background-size: cover; /* Görselin sayfanın tamamını kaplamasını sağlarız */
   background-attachment: fixed; /* Görselin kaymasını engeller */
   padding: 60px 20px;
@@ -150,7 +151,6 @@ const goToRegister = () => {
   width: 550px;
   text-align: center;
 }
-
 
 h2 {
   color: #3973a3;

@@ -13,11 +13,19 @@
       <section class="cafes">
         <h2 class="cafes-title">Hizmet Verdiğimiz Kafeler</h2>
         <div class="cafes-list">
-          <div class="cafe-card">
+          <div
+            class="cafe-card"
+            @click="navigateToCafe('69a5662f-e37d-4012-8820-a3166a8f5807')"
+          >
             <span class="cafe-name">BaristaTime</span>
           </div>
+
           <div class="cafe-card">
-            <span class="cafe-name">Köşebaşı Cafe</span>
+            <span
+              class="cafe-name"
+              @click="navigateToCafe('1f327e7a-0d39-404e-9fff-c6ff37deef00')"
+              >Köşebaşı Cafe</span
+            >
           </div>
         </div>
       </section>
@@ -27,6 +35,13 @@
         <h2 class="page-title" style="color: white">
           Geleceğin Öncüleri Topluluğu
         </h2>
+
+        <img
+          src="images/fupico_logo.jpeg"
+          alt="Fupico Logo"
+          style="max-width: 300px"
+        />
+
         <h5 class="page-title">Biz Kimiz?</h5>
         <q-card-section style="text-align: left">
           <p class="q-my-sm">
@@ -79,14 +94,7 @@
             class="fa fa-globe"
             style="font-size: 24px; margin-right: 10px; color: white"
           ></i>
-          <a
-            href="https://fupico.com/faq"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="website-link"
-          >
-            fupico.com
-          </a>
+          <a href="https://fupico.com/faq" class="website-link"> fupico.com </a>
         </p>
       </section>
     </div>
@@ -96,7 +104,10 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-
+const navigateToCafe = (menuId: string): void => {
+  const url = `/menu/${menuId}`;
+  window.location.href = url; // Yeni sayfaya yönlendirme
+};
 // Router tanımı
 const router = useRouter();
 
@@ -261,7 +272,7 @@ onBeforeUnmount(() => {
 .cafes-title {
   font-size: 30px; /* Başlık boyutunu biraz küçülttüm */
   font-weight: 600;
-  color: #003366;
+  color: #ffffff;
   margin-bottom: 20px;
 }
 
