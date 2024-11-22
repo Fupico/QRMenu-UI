@@ -32,12 +32,12 @@
 
       <!-- Biz Kimiz Başlık ve Metin -->
       <section class="about">
-        <h2 class="page-title" style="color: white">
+        <h4 class="page-title" style="color: white">
           Geleceğin Öncüleri Topluluğu
-        </h2>
+        </h4>
 
         <img
-          src="images/fupico_logo.jpeg"
+          src="images/fupico_logo_1.jpeg"
           alt="Fupico Logo"
           style="max-width: 300px"
         />
@@ -81,7 +81,7 @@
 
       <!-- İletişim Bilgileri Kartı -->
       <section class="contact-info">
-        <h5 class="info-title" style="color: tomato">İletişim Bilgilerimiz</h5>
+        <h5 class="info-title" style="color: white">İletişim Bilgilerimiz</h5>
         <p class="phone-text">
           <a href="tel:+905438194976" class="phone-icon" style="color: white">
             <i class="fa fa-phone"></i>
