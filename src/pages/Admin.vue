@@ -95,7 +95,7 @@
             </a>
             <!-- Linki Göster ve Kopyala -->
             <q-input
-              v-model="companyDto.domain"
+              v-model="fullMenuLink"
               label="Menü Linki"
               outlined
               dense
@@ -107,7 +107,7 @@
               <template v-slot:append>
                 <q-icon
                   name="content_copy"
-                  @click="copyLink"
+                  @click="copyUrlLink"
                   style="cursor: pointer"
                 />
               </template>
@@ -718,12 +718,37 @@
   <FooterComponent />
 </template>
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import { adminAPIs } from "../composables/admin";
 import { uploadImageAPI } from "../composables/upload";
 import { useLoginApi } from "../composables/login";
 import { Notify } from "quasar";
 import FooterComponent from "../components/FooterComponent.vue";
+
+interface CompanyUrlDto {
+  domain: string;
+}
+
+// Örnek değer; gerçekte bu değer API'den gelir.
+const CompanyUrlDto = ref<CompanyUrlDto>({
+  domain: "/menu/69a5662f-e37d-4012-8820-a3166a8f5807",
+});
+
+// Base URL'yi dinamik olarak belirle
+const baseUrl = ref<string>(`https://${window.location.host}`);
+
+// Full menu linki oluştur
+const fullMenuLink = computed<string>(
+  () => `${baseUrl.value}${CompanyUrlDto.value.domain}`
+);
+
+// Kopyalama fonksiyonu
+const copyUrlLink = (): void => {
+  navigator.clipboard.writeText(fullMenuLink.value).then(() => {
+    alert("Link başarıyla kopyalandı!");
+  });
+};
+
 // Dialog kontrolü
 const showFoodDeleteDialog = ref(false);
 

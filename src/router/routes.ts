@@ -16,7 +16,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: "",
-        component: () => import("pages/Menu2.vue"),
+        component: () => import("pages/Menu.vue"),
       },
     ],
   },
