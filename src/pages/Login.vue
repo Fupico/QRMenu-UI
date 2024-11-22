@@ -135,7 +135,7 @@ const goToRegister = () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("src/img/FuPiC.png") no-repeat center center; /* Görseli arka plan olarak ekledik */
+  background: url("/images/FuPiC.png") no-repeat center center; /* Görseli arka plan olarak ekledik */
   background-size: cover; /* Görselin sayfanın tamamını kaplamasını sağlarız */
   background-attachment: fixed; /* Görselin kaymasını engeller */
   padding: 60px 20px;
