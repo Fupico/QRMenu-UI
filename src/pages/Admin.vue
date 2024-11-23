@@ -918,7 +918,7 @@ const closeFoodDialog = (): void => {
 };
 
 // Silme işlemini gerçekleştir
-const performDeleteFood = (): void => {
+const performDeleteFood = async (): Promise<void> => {
   if (selectedFoodId.value !== null) {
     console.log("Ürün silme işlemi başlıyor:", selectedFoodId.value);
     try {
@@ -926,7 +926,7 @@ const performDeleteFood = (): void => {
       await deleteFood(selectedFoodId.value);
       console.log("Ürün başarıyla silindi:", selectedFoodId.value);
 
-      // Örneğin, yeni listeyi yüklemek için bir işlem
+      // Yeni listeyi yükleme işlemi (opsiyonel)
       // await refreshFoodList();
 
       // Dialog kapatma
@@ -957,24 +957,24 @@ const closeDeleteDialog = (): void => {
 };
 
 // Silme işlemini gerçekleştir
-const performDeleteFoodGroup = (): void => {
+const performDeleteFoodGroup = async (): Promise<void> => {
   if (selectedFoodGroupId.value !== null) {
     console.log("Silme işlemi başlıyor:", selectedFoodGroupId.value);
     try {
       // Silme API çağrısı
-      await deleteFood(selectedFoodGroupId.value);
-      console.log("Ürün başarıyla silindi:", selectedFoodGroupId.value);
+      await deleteFoodGroup(selectedFoodGroupId.value);
+      console.log("Ürün grubu başarıyla silindi:", selectedFoodGroupId.value);
 
-      // Örneğin, yeni listeyi yüklemek için bir işlem
+      // Yeni listeyi yükleme işlemi (isteğe bağlı)
       // await refreshFoodList();
 
       // Dialog kapatma
       closeDeleteDialog(); // Dialogu kapat
     } catch (error) {
-      console.error("Ürün silinirken bir hata oluştu:", error);
+      console.error("Ürün grubu silinirken bir hata oluştu:", error);
     }
   } else {
-    console.warn("Silinecek bir ürün seçilmedi!");
+    console.warn("Silinecek bir ürün grubu seçilmedi!");
   }
 };
 
