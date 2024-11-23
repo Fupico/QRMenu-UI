@@ -203,7 +203,7 @@
                   style="max-width: 100%"
                 />
                 <div class="text-h6 q-mt-md">{{ group.groupName }}</div>
-                <div class="text-body1 text-grey-7">
+                <div class="text-body1 text-black-7">
                   {{ group.description || "Açıklama Yok" }}
                 </div>
                 <q-card-actions align="center">
@@ -337,7 +337,76 @@
                   <div class="text-body1">
                     {{ food.description || "Açıklama Yok" }}
                   </div>
-                  <div class="text-body2">Fiyat: {{ food.price }} ₺</div>
+                  <!--  <div class="text-body2">Fiyat: {{ food.price }} ₺</div> -->
+
+                  <q-card-actions class="q-pa-none" align="center">
+                    <!-- isGroupPrice kontrolü -->
+                    <template v-if="food.isGroupPrice === 1">
+                      <!-- Tek fiyat (sağda hizalı) -->
+                      <div style="text-align: right; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="food.price"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                    </template>
+
+                    <template v-else-if="food.isGroupPrice === 2">
+                      <!-- İki fiyat (biri solda, biri sağda) -->
+                      <div style="text-align: left; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="`${food.priceDesc} : ${food.price}`"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                      <div style="text-align: right; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="`${food.priceDesc2} : ${food.price2}`"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                    </template>
+
+                    <template v-else-if="food.isGroupPrice === 3">
+                      <!-- Üç fiyat (solda, ortada, sağda) -->
+                      <div style="text-align: left; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="`${food.priceDesc} : ${food.price}`"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                      <div style="text-align: center; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="`${food.priceDesc2} : ${food.price2}`"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                      <div style="text-align: right; flex: 1">
+                        <q-btn
+                          class="text-body1 text-black-4"
+                          dense
+                          flat
+                          :label="`${food.priceDesc3} : ${food.price3}`"
+                          icon-right="currency_lira"
+                        />
+                      </div>
+                    </template>
+                  </q-card-actions>
                 </q-card-section>
 
                 <!-- Düzenle ve Sil Butonları -->
@@ -479,7 +548,6 @@
             style="max-width: 100%; margin-top: 16px"
             v-model="newFood.name"
             label="Ürün Adı"
-            outlined
             required
           />
 
@@ -489,17 +557,53 @@
             style="max-width: 100%; margin-top: 16px"
             v-model="newFood.description"
             label="Açıklama"
-            outlined
           />
 
           <!-- Ürün Fiyatı -->
+
+          <q-select
+            v-model="newFood.isGroupPrice"
+            label="Kaç Farklı Çeşit"
+            :options="[1, 2, 3]"
+            dense
+            emit-value
+            map-options
+          />
+
+          <!-- İlk Alanlar (Her zaman gösterilir) -->
+          <q-input v-model="newFood.price" label="Fiyat" type="number" />
           <q-input
-            v-model="newFood.price"
-            label="Fiyat"
+            v-if="newFood.isGroupPrice >= 2"
+            v-model="newFood.priceDesc"
+            label="Birinci Türe Özgü Fiyat"
+            hint="Ürünün boyutu veya miktarı olabilir. Örneğin: Küçük boy (Small), Çeyrek, Tam vb."
+            persistent-hint
+          />
+
+          <!-- İkinci Tür (isGroupPrice >= 2) -->
+          <q-input
+            v-if="newFood.isGroupPrice >= 2"
+            v-model="newFood.price2"
+            label="İkinci Türe Özgü Fiyat"
             type="number"
-            outlined
-            style="max-width: 100%; margin-top: 16px"
-            required
+          />
+          <q-input
+            v-if="newFood.isGroupPrice >= 2"
+            v-model="newFood.priceDesc2"
+            label="İkinci Türe Özgü Açıklama"
+          />
+
+          <!-- Üçüncü Tür (isGroupPrice === 3) -->
+          <q-input
+            v-if="newFood.isGroupPrice === 3"
+            v-model="newFood.price3"
+            label="Üçüncü Türe Özgü Fiyat"
+            type="number"
+          />
+          <q-input
+            v-if="newFood.isGroupPrice === 3"
+            v-model="newFood.priceDesc3"
+            label="Üçüncü Türe Özgü Açıklama"
           />
 
           <!-- Resim Yükleme ve Önizleme -->
@@ -605,7 +709,7 @@
   <q-dialog v-model="isUpdateFoodDialogOpen" class="custom-dialog">
     <q-card style="max-width: 800px; width: 100%">
       <q-card-section>
-        <div class="text-h6">Yemeği Güncelle</div>
+        <div class="text-h6">Ürünü Güncelle</div>
       </q-card-section>
       <q-card-section>
         <!-- Resim Önizleme Alanı -->
@@ -627,7 +731,52 @@
         />
         <q-input v-model="selectedFood.name" label="Ürün Adı" />
         <q-input v-model="selectedFood.description" label="Açıklama" />
+
+        <q-select
+          v-model="selectedFood.isGroupPrice"
+          label="Kaç Farklı Çeşit"
+          :options="[1, 2, 3]"
+          outlined
+          dense
+          emit-value
+          map-options
+        />
+
+        <!-- İlk Alanlar (Her zaman gösterilir) -->
         <q-input v-model="selectedFood.price" label="Fiyat" type="number" />
+        <q-input
+          v-if="selectedFood.isGroupPrice >= 2"
+          v-model="selectedFood.priceDesc"
+          label="Birinci Türe Özgü Fiyat"
+          hint="Ürünün boyutu veya miktarı olabilir. Örneğin: Küçük boy (Small), Çeyrek, Tam vb."
+          persistent-hint
+        />
+
+        <!-- İkinci Tür (isGroupPrice >= 2) -->
+        <q-input
+          v-if="selectedFood.isGroupPrice >= 2"
+          v-model="selectedFood.price2"
+          label="İkinci Türe Özgü Fiyat"
+          type="number"
+        />
+        <q-input
+          v-if="selectedFood.isGroupPrice >= 2"
+          v-model="selectedFood.priceDesc2"
+          label="İkinci Türe Özgü Açıklama"
+        />
+
+        <!-- Üçüncü Tür (isGroupPrice === 3) -->
+        <q-input
+          v-if="selectedFood.isGroupPrice === 3"
+          v-model="selectedFood.price3"
+          label="Üçüncü Türe Özgü Fiyat"
+          type="number"
+        />
+        <q-input
+          v-if="selectedFood.isGroupPrice === 3"
+          v-model="selectedFood.priceDesc3"
+          label="Üçüncü Türe Özgü Açıklama"
+        />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat label="İptal" @click="closeUpdateFoodDialog" />
@@ -724,7 +873,10 @@ import { uploadImageAPI } from "../composables/upload";
 import { useLoginApi } from "../composables/login";
 import { Notify } from "quasar";
 import FooterComponent from "../components/FooterComponent.vue";
-
+import { App } from "../App.ts";
+const { project } = App();
+const apiDomain = project.value.apiUrl.replace(/\/api$/, "");
+console.log(apiDomain);
 interface CompanyUrlDto {
   domain: string;
 }
@@ -736,7 +888,6 @@ const CompanyUrlDto = ref<CompanyUrlDto>({
 
 // Base URL'yi dinamik olarak belirle
 const baseUrl = ref<string>(`https://${window.location.host}`);
-
 // Full menu linki oluştur
 const fullMenuLink = computed<string>(
   () => `${baseUrl.value}${CompanyUrlDto.value.domain}`
@@ -770,8 +921,21 @@ const closeFoodDialog = (): void => {
 const performDeleteFood = (): void => {
   if (selectedFoodId.value !== null) {
     console.log("Ürün silme işlemi başlıyor:", selectedFoodId.value);
-    // Örneğin: handleDeleteFood(selectedFoodId.value);
-    closeFoodDialog(); // Dialogu kapat
+    try {
+      // Silme API çağrısı
+      await deleteFood(selectedFoodId.value);
+      console.log("Ürün başarıyla silindi:", selectedFoodId.value);
+
+      // Örneğin, yeni listeyi yüklemek için bir işlem
+      // await refreshFoodList();
+
+      // Dialog kapatma
+      closeFoodDialog();
+    } catch (error) {
+      console.error("Ürün silinirken bir hata oluştu:", error);
+    }
+  } else {
+    console.warn("Silinecek bir ürün seçilmedi!");
   }
 };
 
@@ -796,18 +960,37 @@ const closeDeleteDialog = (): void => {
 const performDeleteFoodGroup = (): void => {
   if (selectedFoodGroupId.value !== null) {
     console.log("Silme işlemi başlıyor:", selectedFoodGroupId.value);
-    // Örneğin: handleDeleteFoodGroup(selectedFoodGroupId.value);
-    closeDeleteDialog(); // Dialogu kapat
+    try {
+      // Silme API çağrısı
+      await deleteFood(selectedFoodGroupId.value);
+      console.log("Ürün başarıyla silindi:", selectedFoodGroupId.value);
+
+      // Örneğin, yeni listeyi yüklemek için bir işlem
+      // await refreshFoodList();
+
+      // Dialog kapatma
+      closeDeleteDialog(); // Dialogu kapat
+    } catch (error) {
+      console.error("Ürün silinirken bir hata oluştu:", error);
+    }
+  } else {
+    console.warn("Silinecek bir ürün seçilmedi!");
   }
 };
 
 const isAddMenuFoodDialogOpen = ref(false);
 const newFood = ref({
-  name: "",
-  description: "",
-  price: 0,
-  imageUrl: "",
+  name: "", // Ürün adı
+  description: "", // Açıklama
+  price: 0, // Fiyat
+  imageUrl: "", // Görsel URL'si
+  isGroupPrice: 1, // Grup fiyatı (varsayılan 1)
   foodGroupId: 1, // Seçilen menü grubunun ID'si
+  priceDesc: "", // Fiyat açıklaması
+  price2: null, // İkinci fiyat (nullable)
+  priceDesc2: "", // İkinci fiyat açıklaması
+  price3: null, // Üçüncü fiyat (nullable)
+  priceDesc3: "", // Üçüncü fiyat açıklaması
 });
 const { logout } = useLoginApi();
 const showLogoutDialog = ref(false);
@@ -843,7 +1026,13 @@ const resetNewFoodForm = () => {
     description: "",
     price: 0,
     imageUrl: "",
-    foodGroupId: 1,
+    isGroupPrice: 1, // Grup fiyatı (varsayılan 1)
+    foodGroupId: 1, // Seçilen menü grubunun ID'si
+    priceDesc: "", // Fiyat açıklaması
+    price2: null, // İkinci fiyat (nullable)
+    priceDesc2: "", // İkinci fiyat açıklaması
+    price3: null, // Üçüncü fiyat (nullable)
+    priceDesc3: "", // Üçüncü fiyat açıklaması
   };
   previewFoodImageUrl.value = ""; // Resim önizlemesini de sıfırlıyoruz
 };
@@ -1166,7 +1355,7 @@ const onFileChange = async (event: Event) => {
 };
 
 // Resim yükleme ve API'ye istek atma fonksiyonu
-const apiDomain = "https://api.qrmenu.fupico.com"; // API domainini tanımla
+//const  apiDomain = baseUrl; // API domainini tanımla
 // Resim yükleme işlemi
 
 const uploadImage = async () => {
@@ -1211,6 +1400,12 @@ const performUpdateFood = async () => {
       description: selectedFood.value.description,
       price: selectedFood.value.price,
       imageUrl: imageUrl,
+      isGroupPrice: selectedFood.value.isGroupPrice ?? 1,
+      priceDesc: selectedFood.value.priceDesc || null,
+      price2: selectedFood.value.price2 ?? null,
+      priceDesc2: selectedFood.value.priceDesc2 || null,
+      price3: selectedFood.value.price3 ?? null,
+      priceDesc3: selectedFood.value.priceDesc3 || null,
     };
 
     await updateFood(selectedFood.value.foodId, payload);
@@ -1333,11 +1528,17 @@ function closeUpdateFoodDialog() {
 // Dialog durumları ve seçilen Ürün
 const isUpdateFoodDialogOpen = ref(false);
 const selectedFood = ref({
-  foodId: 1,
-  name: "",
-  description: "",
-  price: 0,
-  imageUrl: "",
+  foodId: 0, // Varsayılan null, API'den gelen ID ile güncellenecek
+  name: "", // Ürün adı
+  description: "", // Açıklama
+  price: 0, // Fiyat
+  imageUrl: "", // Görsel URL'si
+  isGroupPrice: 0, // Grup fiyatı (varsayılan 0)
+  priceDesc: "", // Fiyat açıklaması
+  price2: null, // İkinci fiyat (nullable)
+  priceDesc2: "", // İkinci fiyat açıklaması
+  price3: null, // Üçüncü fiyat (nullable)
+  priceDesc3: "", // Üçüncü fiyat açıklaması
 });
 
 const triggerFileInput = () => {
