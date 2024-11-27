@@ -25,9 +25,6 @@
         </div>
       </div>
     </div>
-    <div v-if="!hasFoods" class="empty-menu-message">
-      Menünüz Hazırlanıyor...
-    </div>
 
     <!-- Tablar -->
     <q-tabs
@@ -281,6 +278,78 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <div v-if="!hasFoods" class="empty-menu-message">
+      <div class="tea-cup">
+        <img :src="require('/public/images/aaa.gif')" class="small-tea-cup" />
+      </div>
+    </div>
+    <q-dialog v-if="hasFoods" v-model="showModal">
+      <q-card class="modal-card q-pa-md" style="min-width: 350px">
+        <q-card-section v-if="selectedFood">
+          <div class="text-h6">{{ selectedFood?.name }}</div>
+          <q-img
+            class="q-mt-md"
+            :src="selectedFood?.imageUrl"
+            contain
+            style="max-width: 300px; max-height: 300px"
+          />
+        </q-card-section>
+        <q-card-section v-if="selectedFood?.description">
+          <div>{{ selectedFood?.description }}</div>
+
+          <!-- isGroupPrice kontrolü -->
+          <div v-if="selectedFood?.isGroupPrice === 1" class="row justify-end">
+            <!-- Tek fiyat (sağda hizalı) -->
+            <div style="text-align: right; flex: 1">
+              <div class="text-h6 q-mt-md">{{ selectedFood?.price }}₺</div>
+            </div>
+          </div>
+
+          <div
+            v-else-if="selectedFood?.isGroupPrice === 2"
+            class="row justify-between"
+          >
+            <!-- İki fiyat (biri solda, biri sağda) -->
+            <div style="text-align: left; flex: 1">
+              <div class="text-h6 q-mt-md">
+                {{ selectedFood?.priceDesc }}: {{ selectedFood?.price }}₺
+              </div>
+            </div>
+            <div style="text-align: right; flex: 1">
+              <div class="text-h6 q-mt-md">
+                {{ selectedFood?.priceDesc2 }}: {{ selectedFood?.price2 }}₺
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-else-if="selectedFood?.isGroupPrice === 3"
+            class="row justify-around"
+          >
+            <!-- Üç fiyat (solda, ortada, sağda) -->
+            <div style="text-align: left; flex: 1">
+              <div class="text-h6 q-mt-md">
+                {{ selectedFood?.priceDesc }}: {{ selectedFood?.price }}₺
+              </div>
+            </div>
+            <div style="text-align: center; flex: 1">
+              <div class="text-h6 q-mt-md">
+                {{ selectedFood?.priceDesc2 }}: {{ selectedFood?.price2 }}₺
+              </div>
+            </div>
+            <div style="text-align: right; flex: 1">
+              <div class="text-h6 q-mt-md">
+                {{ selectedFood?.priceDesc3 }}: {{ selectedFood?.price3 }}₺
+              </div>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Kapat" @click="showModal = false" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <FooterComponent />
   </div>
 </template>
@@ -433,5 +502,12 @@ onMounted(async () => {
 }
 .row {
   align-items: center;
+}
+.tea-cup {
+  animation: shake 2s ease-in-out infinite;
+}
+.small-tea-cup {
+  width: 300px;
+  height: auto;
 }
 </style>
