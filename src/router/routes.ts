@@ -11,12 +11,23 @@ const routes: RouteRecordRaw[] = [
   },
   {
     // Dinamik userId parametresi ile menu yönlendirmesi
-    path: "/menu/:userId?",
+    path: "/menu2/:userId?",
     component: () => import("layouts/EmptyLayout.vue"),
     children: [
       {
         path: "",
         component: () => import("pages/Menu.vue"),
+      },
+    ],
+  },
+  {
+    // Dinamik userId parametresi ile menu yönlendirmesi
+    path: "/menu/:userId?",
+    component: () => import("layouts/EmptyLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/Menu2.vue"),
       },
     ],
   },

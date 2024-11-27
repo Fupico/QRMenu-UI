@@ -50,134 +50,113 @@
 
         <!-- Grup İçeriği Açılabilir Kısım -->
         <div v-show="isTabOpen(index)">
-          <q-tab-panels
-            class="custom-tab-panels"
-            v-if="hasFoods"
-            v-model="tab"
-            animated
-            swipeable
-          >
-            <q-tab-panel
-              :name="`tab${index}`"
-              v-for="(i, index) in dataMenu.filter(
-                (group) => group.foods.length > 0
-              )"
-              :key="index"
+          <div class="row">
+            <div
+              class="col-12 col-sm-6 col-md-4"
+              v-for="(ii, foodIndex) in i.foods"
+              :key="foodIndex"
             >
-              <div class="text-h6 text-grey-2">{{ i.groupName }}</div>
+              <q-card
+                class="my-card q-ma-sm q-pa-none custom-card"
+                flat
+                bordered
+                @click="openModal(ii)"
+              >
+                <q-card-section class="row no-wrap q-pa-none">
+                  <q-card-section class="col-7 q-pa-none">
+                    <div
+                      class="text-orange-3 q-mb-xs q-pt-lg"
+                      style="font-size: 16px"
+                    >
+                      {{ ii.name }}
+                    </div>
+                    <div
+                      class="text-caption text-grey-4 q-mb-sm"
+                      v-if="ii.description"
+                    >
+                      {{ ii.description }}
+                    </div>
+                  </q-card-section>
+                  <q-card-section class="col-5 flex justify-center">
+                    <q-img
+                      class="rounded-borders"
+                      :src="ii.imageUrl"
+                      contain
+                      style="max-width: 100px; max-height: 100px"
+                    />
+                  </q-card-section>
+                </q-card-section>
+                <q-separator />
+                <q-card-actions class="q-pa-none" align="center">
+                  <template v-if="ii.isGroupPrice === 1">
+                    <!-- Tek fiyat (sağda hizalı) -->
+                    <div style="text-align: right; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="ii.price"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                  </template>
 
-              <div class="row">
-                <div
-                  class="col-12 col-sm-6 col-md-4"
-                  v-for="(ii, indexx) in i.foods"
-                  :key="indexx"
-                >
-                  <q-card
-                    class="my-card q-ma-sm q-pa-none custom-card"
-                    flat
-                    bordered
-                    @click="openModal(ii)"
-                  >
-                    <q-card-section class="row no-wrap q-pa-none">
-                      <!-- Yemek İsmi ve Açıklama -->
-                      <q-card-section class="col-7 q-pa-none">
-                        <div
-                          class="text-orange-3 q-mb-xs q-pt-lg"
-                          style="font-size: 16px"
-                        >
-                          {{ ii.name }}
-                        </div>
-                        <div
-                          class="text-caption text-grey-4 q-mb-sm"
-                          v-if="ii.description"
-                        >
-                          {{ ii.description }}
-                        </div>
-                      </q-card-section>
+                  <template v-else-if="ii.isGroupPrice === 2">
+                    <!-- İki fiyat (biri solda, biri sağda) -->
+                    <div style="text-align: left; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="`${ii.priceDesc} : ${ii.price}`"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                    <div style="text-align: right; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="`${ii.priceDesc2} : ${ii.price2}`"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                  </template>
 
-                      <!-- Yemek Resmi -->
-                      <q-card-section class="col-5 flex justify-center">
-                        <q-img
-                          class="rounded-borders"
-                          :src="ii.imageUrl"
-                          contain
-                          style="max-width: 100px; max-height: 100px"
-                        />
-                      </q-card-section>
-                    </q-card-section>
-
-                    <q-separator />
-
-                    <q-card-actions class="q-pa-none" align="center">
-                      <!-- Fiyat Bilgisi -->
-                      <template v-if="ii.isGroupPrice === 1">
-                        <div style="text-align: right; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="ii.price"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                      </template>
-
-                      <template v-else-if="ii.isGroupPrice === 2">
-                        <div style="text-align: left; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="`${ii.priceDesc} : ${ii.price}`"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                        <div style="text-align: right; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="`${ii.priceDesc2} : ${ii.price2}`"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                      </template>
-
-                      <template v-else-if="ii.isGroupPrice === 3">
-                        <div style="text-align: left; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="`${ii.priceDesc} : ${ii.price}`"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                        <div style="text-align: center; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="`${ii.priceDesc2} : ${ii.price2}`"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                        <div style="text-align: right; flex: 1">
-                          <q-btn
-                            class="text-body1 text-grey-4"
-                            dense
-                            flat
-                            :label="`${ii.priceDesc3} : ${ii.price3}`"
-                            icon-right="currency_lira"
-                          />
-                        </div>
-                      </template>
-                    </q-card-actions>
-                  </q-card>
-                </div>
-              </div>
-            </q-tab-panel>
-          </q-tab-panels>
+                  <template v-else-if="ii.isGroupPrice === 3">
+                    <!-- Üç fiyat (solda, ortada, sağda) -->
+                    <div style="text-align: left; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="`${ii.priceDesc} : ${ii.price}`"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                    <div style="text-align: center; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="`${ii.priceDesc2} : ${ii.price2}`"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                    <div style="text-align: right; flex: 1">
+                      <q-btn
+                        class="text-body1 text-grey-4"
+                        dense
+                        flat
+                        :label="`${ii.priceDesc3} : ${ii.price3}`"
+                        icon-right="currency_lira"
+                      />
+                    </div>
+                  </template>
+                </q-card-actions>
+              </q-card>
+            </div>
+          </div>
         </div>
       </div>
     </q-page>
@@ -258,14 +237,15 @@ import { useRoute, useRouter } from "vue-router";
 import { menu } from "../composables/menu";
 import { computed } from "vue"; // computed import edin
 import FooterComponent from "../components/FooterComponent.vue";
-
+const router = useRouter();
 const openTabs = ref([]);
 // Tab'ı açıp kapamak için fonksiyon
 function toggleTab(index) {
+  // Tab açık mı kontrolü
   if (openTabs.value.includes(index)) {
-    openTabs.value = openTabs.value.filter((tabIndex) => tabIndex !== index); // Kapama
+    openTabs.value = openTabs.value.filter((tabIndex) => tabIndex !== index);
   } else {
-    openTabs.value.push(index); // Açma
+    openTabs.value = [index]; // Sadece bir tab açılabilir
   }
 }
 
@@ -316,6 +296,14 @@ const selectedFood = ref<Food | null>(null);
 
 const reloadMenu = async () => {
   dataMenu.value = await getMenu(userId.value);
+  if (dataMenu.value[0].selectedMenu !== 1) {
+    console.log("buraya giren geri zekalı varmı ?");
+    const selectedMenu = dataMenu.value[0].selectedMenu;
+    const newPath = `/menu${selectedMenu}/${userId.value}`;
+
+    // Vue Router ile yönlendirme
+    router.push(newPath);
+  }
 };
 
 // Tab geçişi için fonksiyonlar
