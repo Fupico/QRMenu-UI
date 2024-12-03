@@ -14,13 +14,19 @@
             />
           </div>
           <div class="input-group">
-            <i class="fas fa-lock icon"></i>
-            <input
-              type="password"
-              v-model="dataReqlogin.password"
-              required
-              placeholder="Şifre"
-            />
+    <i class="fas fa-lock icon"></i>
+    <input
+      :type="showPassword ? 'text' : 'password'"
+      v-model="dataReqlogin.password"
+      required
+      placeholder="Şifre"
+    />
+    <i
+      class="fas"
+      :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+      @click="togglePasswordVisibility"
+      style="cursor: pointer; margin-left: 8px;"
+    ></i>
           </div>
           <button type="submit" class="btn-login">Giriş Yap</button>
         </form>
@@ -53,6 +59,12 @@ const dataReqlogin = ref({
   username: "",
   password: "",
 });
+
+const showPassword = ref(false);
+
+function togglePasswordVisibility() {
+  showPassword.value = !showPassword.value;
+}
 
 const onSubmit = async () => {
   const result = await login(dataReqlogin.value);
@@ -190,5 +202,14 @@ h2 {
 .btn-login:hover {
   background-color: #0075fc;
   transform: scale(1.05);
+}
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.fas {
+  margin-right: 8px;
+  color: #3973a3; /* İkon rengi */
 }
 </style>

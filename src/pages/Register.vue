@@ -25,11 +25,17 @@
           <div class="input-group">
             <i class="fas fa-lock icon"></i>
             <input
-              type="password"
-              v-model="dataReqRegister.password"
+            :type="showPassword ? 'text' : 'password'"
+                          v-model="dataReqRegister.password"
               required
               placeholder="Şifre"
             />
+            <i
+      class="fas"
+      :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+      @click="togglePasswordVisibility"
+      style="cursor: pointer; margin-left: 8px;"
+    ></i>
           </div>
           <button type="submit" class="btn-register">Kayıt Ol</button>
         </form>
@@ -58,6 +64,12 @@ const dataReqRegister = ref({
   email: "",
   password: "",
 });
+
+const showPassword = ref(false);
+
+function togglePasswordVisibility() {
+  showPassword.value = !showPassword.value;
+}
 
 const onRegister = async () => {
   try {
@@ -182,5 +194,14 @@ h2 {
 .btn-back:hover {
   background-color: #c12e2e;
   transform: scale(1.05);
+}
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.fas {
+  margin-right: 8px;
+  color: #3973a3; /* İkon rengi */
 }
 </style>
