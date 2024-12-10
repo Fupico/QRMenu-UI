@@ -1,51 +1,106 @@
 <template>
-<div class="q-pa-md">
-    <q-layout view="hHh Lpr lff"  class="shadow-2 rounded-borders">
-      <q-header elevated :class="$q.dark.isActive ? 'bg-secondary' : 'light-blue-8'">
-        <q-toolbar>
-          <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-          <q-toolbar-title>Header</q-toolbar-title>
-        </q-toolbar>
-      </q-header>
+<div>
+  <q-layout view="lHh lpr lff" class="shadow-2 rounded-borders">
+  <q-header elevated :class="$q.dark.isActive ? 'bg-gradient-to-r from-indigo-800 via-indigo-600 to-indigo-500' : 'bg-gradient-to-r from-blue-600 to-blue-400'">
+    <q-toolbar>
+      <!-- Menü butonu, drawer durumuna göre ikon değiştiriyor -->
+      <q-btn
+        flat
+        @click="drawer = !drawer"
+        round
+        dense
+        :icon="drawer ? 'arrow_back' : 'menu'"
+        color="white"
+      />
+    </q-toolbar>
+  </q-header>
 
-      <q-drawer
-        v-model="drawer"
-        show-if-above
-        :mini="!drawer || miniState"
-        @click.capture="drawerClick"
-        :width="200"
-        :breakpoint="500"
-        bordered
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-      >
-        <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
-          <q-list padding>
-            <q-item clickable v-ripple @click="activeItem = 'inbox'" :active="activeItem === 'inbox'">
-              <q-item-section avatar>
-                <q-icon name="inbox" />
-              </q-item-section>
-              <q-item-section>Hakkında</q-item-section>
-            </q-item>
+  <q-drawer
+    v-model="drawer"
+    show-if-above
+    :mini="!drawer || miniState"
+    @click.capture="drawerClick"
 
-            <q-item clickable v-ripple @click="activeItem = 'star'" :active="activeItem === 'star'">
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-              <q-item-section>Menü Düzenleme</q-item-section>
-            </q-item>
+  >
+
+  <div class="q-pa-md flex flex-center column text-center bg-blue-8">
+  <q-avatar size="80px" class="q-mb-md">
+    <img src="https://via.placeholder.com/80" alt="Şirket Logosu" />
+  </q-avatar>
+  <div class="text-h5 text-bold text-white">{{ companyDto.name }}</div>
+</div>
+
+  <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+
+
+    <q-list padding>
+  <q-item clickable v-ripple @click="activeItem = 'inbox'" :active="activeItem === 'inbox'" class="q-pa-md">
+    <q-item-section avatar>
+      <q-icon name="store" size="20px" />
+    </q-item-section>
+    <q-item-section class="text-h6">Hakkında</q-item-section>
+  </q-item>
+  <q-separator />
+
+  <q-item clickable v-ripple @click="activeItem = 'star'" :active="activeItem === 'star'" class="q-pa-md">
+    <q-item-section avatar>
+      <q-icon name="edit" size="20px" />
+    </q-item-section>
+    <q-item-section class="text-h6">Menü Düzenleme</q-item-section>
+  </q-item>
+  <q-separator />
+
+  <q-item clickable v-ripple @click="confirmLogout" :active="activeItem === 'logout'" class="q-pa-md">
+    <q-item-section avatar>
+      <q-icon name="logout" size="20px" />
+    </q-item-section>
+    <q-item-section class="text-h6">Çıkış</q-item-section>
+  </q-item>
+
+
+
+<!-- Çıkış Onay Diyaloğu -->
+<q-dialog v-model="showLogoutDialog" persistent>
+      <q-card class="dialog-card">
+        <!-- Başlık ve İkon -->
+        <q-card-section class="row items-center justify-center">
+          <q-icon name="warning" size="48px" color="red" />
+          <div class="text-h5 text-center text-bold q-ml-sm">
+            Çıkış Yapmak İstediğinize Emin misiniz?
+          </div>
+        </q-card-section>
+
+        <!-- Açıklama -->
+        <q-card-section class="text-center q-pt-md">
+          <p>
+            Çıkış yaptığınızda oturumunuz sonlandırılacak ve tekrar giriş
+            yapmanız gerekecek.
+          </p>
+        </q-card-section>
+
+        <!-- Aksiyon Butonları -->
+        <q-card-actions align="around" class="q-pt-md">
+          <q-btn
+            flat
+            label="Hayır, Vazgeç"
+            color="negative"
+            icon="close"
+            @click="closeDialog"
+          />
+          <q-btn
+            flat
+            label="Evet, Çıkış Yap"
+            color="positive"
+            icon="logout"
+            @click="performLogout"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
           </q-list>
         </q-scroll-area>
 
-        <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
-          <q-btn
-            dense
-            round
-            unelevated
-            color="accent"
-            icon="chevron_left"
-            @click="miniState = true"
-          />
-        </div>
+
       </q-drawer>
 
       <q-page-container>
@@ -69,7 +124,7 @@
               max-width: 800px;
               height: 100%; /* Yüksekliği %100 yaparak tam görünmesini sağlıyoruz */
               min-height: 400px; /* Minimum bir yükseklik belirliyoruz */
-              object-fit: cover; /* Resmi boyutuna göre kesmeden orantılı bir şekilde doldur */
+              object-fit: contain /* Resmi boyutuna göre kesmeden orantılı bir şekilde doldur */
               margin: 0 auto;
               cursor: pointer;
             "
@@ -681,7 +736,7 @@
               margin-right: 10px;
             "
           />
-          <q-btn
+          <q-btnw
             flat
             label="Kaydet"
             color="primary"
@@ -1828,12 +1883,6 @@ function drawerClick(e) {
   width: 100%;
 }
 
-.row {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1600px;
-}
-
 .q-card {
   display: flex;
   flex-direction: column;
@@ -1852,6 +1901,7 @@ function drawerClick(e) {
 .q-dialog .q-card-section {
   text-align: center;
 }
+
 
 .q-dialog .q-card-actions {
   justify-content: flex-end;
@@ -1902,4 +1952,5 @@ function drawerClick(e) {
 .footer-phone q-icon {
   cursor: pointer;
 }
+
 </style>
