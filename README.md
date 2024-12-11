@@ -1,6 +1,6 @@
-# QRMenu (qrmenuproject)
+# QR Menu (fupico-qrmenu)
 
-A QR Code Menu App
+FuPiCo QR Menu
 
 ## Install the dependencies
 
@@ -24,4 +24,4 @@ quasar build -m pwa
 
 ### Customize the configuration
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

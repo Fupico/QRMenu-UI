@@ -1,42 +1,43 @@
 {
-  "name": "qrmenuproject",
+  "name": "fupico-qrmenu",
   "version": "0.0.1",
-  "description": "A QR Code Menu App",
-  "productName": "Qr Menu",
+  "description": "FuPiCo QR Menu",
+  "productName": "QR Menu",
   "author": "ssule <ssulecelepp@gmail.com>",
+  "type": "module",
   "private": true,
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "postinstall": "quasar prepare"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
-    "core-js": "^3.31.1",
-    "quasar": "^2.8.0",
-    "vue": "^3.2.29",
+    "pinia": "^2.0.11",
+    "quasar": "^2.16.0",
+    "register-service-worker": "^1.7.2",
+    "vue": "^3.4.18",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@quasar/app-webpack": "^3.9.2",
-    "@types/node": "^12.20.21",
-    "workbox-webpack-plugin": "^7.3.0"
+    "@intlify/unplugin-vue-i18n": "^2.0.0",
+    "@quasar/app-vite": "^2.0.0",
+    "@types/node": "^20.5.9",
+    "autoprefixer": "^10.4.2",
+    "typescript": "~5.5.3",
+    "workbox-build": "^7.3.0",
+    "workbox-cacheable-response": "^7.3.0",
+    "workbox-core": "^7.3.0",
+    "workbox-expiration": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-routing": "^7.3.0",
+    "workbox-strategies": "^7.3.0"
   },
-  "browserslist": [
-    "last 10 Chrome versions",
-    "last 10 Firefox versions",
-    "last 4 Edge versions",
-    "last 7 Safari versions",
-    "last 8 Android versions",
-    "last 8 ChromeAndroid versions",
-    "last 8 FirefoxAndroid versions",
-    "last 10 iOS versions",
-    "last 5 Opera versions"
-  ],
   "engines": {
-    "node": "^20 || ^18 || ^16",
+    "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }

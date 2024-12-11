@@ -280,7 +280,7 @@
     </q-dialog>
     <div v-if="!hasFoods" class="empty-menu-message">
       <div class="tea-cup">
-        <img :src="require('/public/images/aaa.gif')" class="small-tea-cup" />
+        <img src="/images/aaa.gif" class="small-tea-cup" />
       </div>
     </div>
     <q-dialog v-if="hasFoods" v-model="showModal">

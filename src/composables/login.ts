@@ -18,7 +18,7 @@ export function useLoginApi() {
       if (response.status === 200) {
         localStorage.removeItem("userDetail");
         localStorage.setItem("accessToken", response.data.data);
-        router.replace("/admin");
+        router.replace("/admin2");
         return { success: true };
       } else {
         return { success: false, errors: response.data.errors };
