@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
   overflow: hidden; /* Taşan içeriği gizlemek için */
-  background: url("/images/FuPic.png") no-repeat center center;
+  background: url("/images/FuPiC.png") no-repeat center center;
 }
 
 .contact-page::before {
