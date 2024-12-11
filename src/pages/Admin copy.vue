@@ -1,6 +1,6 @@
 <template>
 <div>
-  <q-layout view="lHh lpr lff" class="shadow-2 rounded-borders">
+  <q-layout view="lHh Lpr lff" class="shadow-2 rounded-borders">
   <q-header elevated :class="$q.dark.isActive ? 'bg-gradient-to-r from-indigo-800 via-indigo-600 to-indigo-500' : 'bg-gradient-to-r from-blue-600 to-blue-400'">
     <q-toolbar>
       <!-- Menü butonu, drawer durumuna göre ikon değiştiriyor -->
