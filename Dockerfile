@@ -2,11 +2,9 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-COPY .npmrc ./
+COPY . ./
 RUN npm ci
 
-COPY . ./
 RUN npx quasar build -m pwa
 
 FROM nginx:1.27-alpine AS runtime
